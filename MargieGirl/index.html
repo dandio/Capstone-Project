@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@500&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link rel="shortcut icon" type="image/png" href="Pictures/favicon_io/favicon-16x16.png">
+
+  <title>Margie Girl Massage Clinic</title>
+
+</head>
+
+<body>
+  <div id="app">
+    <v-app style="background-color: #fefefe9f;" id="MGMC">
+           
+      <nav-component :nav-items="navItems" :colors="colors" @change-nav-selection="changeNavSelection($event)" @handle-logo-click="handleLogoClick()"></nav-component>
+            
+      <!--MAIN-->
+      <v-main>
+        <v-container fluid>
+
+          <v-row>
+            <v-col cols="12">
+              <v-card flat>
+                <v-card-title :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-10'"><h2>{{navSelection.title}}</h2></v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
+
+
+          <!-- HOME -->
+          <template v-if="navSelection.id === 1">
+            <home-component :colors="colors"></home-component>  
+          </template>
+          
+          <!-- MEET MARGIE -->
+          <template v-else-if="navSelection.id === 2">
+            <biography-component></biography-component>
+          </template>
+
+         <!-- SERVICES -->
+          <template v-else-if="navSelection.id === 3">
+            <services-component :photo-cycle="photoCycle"></services-component>
+          </template>
+          
+          <!-- FASCIA FACTS -->
+          <template v-else-if="navSelection.id === 4">
+            <fascia-component></fascia-component>
+          </template>
+          
+          <!-- CALENDAR -->
+          <template v-else-if="navSelection.id === 5">
+            <calendar-component></calendar-component>
+          </template>
+          
+          <!-- CONTACT -->
+          <template v-else-if="navSelection.id === 6">
+            <contact-component></contact-component>
+          </template>
+
+        </v-container>
+
+      </v-main>
+
+      <footer-component :social-media="socialMedia" :colors="colors"></footer-component>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
+  <!--NAV BAR TEMPLATE-->
+  <script type="text/x-template" id="nav-component">
+    <v-container pa-0 fluid>
+      
+      <!--NAVIGATION DRAWER-->
+      <v-navigation-drawer v-model="drawer" fixed temporary app>
+        <v-list nav dense>
+            <v-list-item v-for="item in navItems" :key="item.id" @click="$emit('change-nav-selection', item)">
+              <v-list-item-icon>
+                <v-icon>{{item.icon}}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{item.title}}</v-list-item-title>
+            </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+     <!-- APP BAR -->
+     <template>
+      <v-app-bar app fixed :color="colors.primary" dark prominent src="Pictures\Path.jpg">
+        <template v-slot:img="{ props }">
+          <v-img v-bind="props" gradient="to top right, rgba(0,191,165,.7), rgba(25,32,72,.7)"></v-img>
+        </template>
+          <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+          <v-img style="cursor: pointer" :class="$vuetify.breakpoint.xs ? 'mx-auto' : 'mx-0'" 
+          src="Pictures\mgmc_logo.png" contain max-height="130" max-width="130" @click="$emit('handle-logo-click')"></v-img>
+        <template v-if="!$vuetify.breakpoint.xs">
+          <v-app-bar-title><h2 class="heading-1">Margie Girl Massage Clinic</h2></v-app-bar-title>   
+        </template>
+      </v-app-bar>
+    </template>
+    </v-container>
+  </script>
+
+  <!--HOME PAGE TEMPLATE-->
+  <script type="text/x-template" id="home-component">
+    <!-- HOME CONTENT -->
+    <v-container fluid>
+        
+        <v-row align="center">
+           <!-- HOME PAGE QUOTE -->
+          <v-col xs="12" md="8">
+            <v-card
+              class="font-italic pa-3 text-center" flat tile>
+            <h1>"The oldest form of medicine...massage therapy!"</h1>
+            </v-card>
+          </v-col>
+
+
+            <v-col xs="12" md="4">
+
+            <!-- COVID BUTTON  -->
+           <v-dialog transition="dialog-bottom-transition" max-width="600">
+             <template v-slot:activator="{ on, attrs }">
+               <v-btn dark block x-large :color="colors.secondary" v-on="on">
+                 COVID-19 Information
+               </v-btn>
+              </template>
+             
+             <template v-slot:default="dialog">
+               <v-card class="pa-4">
+                    <v-card-title>
+                        <v-toolbar dark :color="colors.primary">
+                            COVID-19 Guidelines
+                        </v-toolbar>
+                    </v-card-title>
+                
+                   <v-card-text pa-4><h5>
+                   In compliance with the CDC, we are following these COVID-19 Precautions to keep all of us safe:
+                   <br>
+                   <li>A mask is to be worn at all times throughout visit.</li>
+                   
+                   <li>If you have been exposed to COVID-19 within the past 14 days, please let us know.</li>
+                   
+                   <li>If you are currently experiencing COVID-19 symptoms, or have recently tested positive for COVID-19, please let us know.</li>
+                   
+                   <li>After each session, all surfaces, equipment, and tools are properly sanitized. </li>
+                   
+                   <li>Table coverings and sheets are washed regularly and also swapped out after a client departs.</li>
+                   
+                   <li>The room air is continuously being purified via an air purifier reducing contaminants in the area.</li>                   
+                   </h5></v-card-text>
+
+               </v-card> 
+             </template>
+           </v-dialog>
+         </v-col>
+
+        </v-row>
+        
+        <!-- HOME PAGE CONTENT  -->
+        <v-row>
+          <v-col xs="12" sm= "6">
+            <v-card class="pa-4"  flat tile >
+              <div align="center">
+                <div class="text-decoration-underline">
+                <h2>Welcome to Margie Girl Massage Clinic!<br></h2>
+                </div>
+                <h3>
+                <br>Do you want stress relief?<br>
+                Do you need pain relief?<br>
+                Would you like to look and feel better?<br>
+                Margie has a massage for you.
+                </h3>
+              </div>
+            
+              <p><br>At Margie Girl Massage Clinic, our goal is to help your body support its natural healing!</p> 
+
+              <p>We are all unique. Your massage will be titrated and based on your individual goals and needs. Each massage is different and based on your particular condition. We believe massage supports the healing of our body, and we believe in your health and wellness.</p>
+              
+              <p>Margie Completed her training at the Philadelphia School of Massage and Bodywork. Her practice involves helping her patients find relief from stress and chronic body pain.</p>
+              
+              <p>In your visit you can expect a warm, quiet space with a beneficial treatment based on knowledge of anatomy, technique, and skill. There will be focused intention to promote stress reduction, relieve sore muscles, and help soothe aching joints.</p>
+              <p> Allow us to help your body renew itself through our healing hands!</p>
+            </v-card>
+          </v-col>
+          
+           <!-- HOME PAGE PICTURES  -->
+           <v-col xs="12" sm="6">
+            <v-card class="pa-4" outlined tile>
+            <v-img src="Pictures\Peaceful.jpg" max-height="700">
+            </v-img>
+            </v-card>
+
+          </v-col>
+        </v-row>
+      </v-container>
+    </script>
+
+    <!-- MEET MARGIE TEMPLATE-->
+    <script type="text/x-template" id="biography-component">
+      <v-container fluid>
+        <!-- MEET MARGIE PHOTO -->
+        <v-row>
+          <v-col cols="12">
+            <v-card  align="center" flat>
+              <v-img  max-height="400" max-width="600" style="border-radius: 40px;"
+              src="Pictures/Margie.jpg"></v-img>
+            </v-card>
+          </v-col>
+        </v-row>
+     
+        <!-- MEET MARGIE CONTENT  -->
+        <v-row>
+          <v-col cols="12">
+            <v-card class="pa-4" flat tile align="center">
+              <h2> Hello there, beautiful!</h2>
+              <p><br>My name is Margie. For years I suffered with chronic pain, depression, migraines, and anxiety. Sadly, after being diagnosed with “syndromes”, and “dysfunctional issues”, I was turned over to pain management by doctors. That is when I turned to self-care.</p>
+              
+              <p>Since then, massage and fascia restoration (Fascia Blasting) have saved my life. I discovered that soft tissue a.k.a fascia work had amazing results. Headaches, stress, grief, scar tissue, burning, radiating pain, muscle soreness, and cellulite have <b>ALL</b> improved.</p>
+
+              <p>Becoming aware of the awesome benefits of massage and the transformation of my chronic pain led me to enroll in the Philadelphia School of Massage and Bodywork. I have learned the importance of connective tissue and its role in the body. Chronic inflammation is deadly, massage is necessary. Fascia Blasting changed my life. This all has led me to a healthier pain-free lifestyle.</p>
+
+              <p>We all come from different lifestyles and life experiences at Margie Girl Massage Clinic. We access where you are right now and your unique goals for your massage session. With my knowledge of anatomy, palpation skills, and a warm quiet space we can begin your body’s own healing journey.</p>
+
+              <h4>Allow your wellness ♥</h4>
+              <h3>Schedule an appointment today!</h3>
+              
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </script>
+
+    <!--SERVICES PAGE TEMPLATE-->
+    <script type="text/x-template" id="services-component">
+    <!-- SERVICES CONTENT -->
+    <v-container fluid>
+                
+        <!-- SERVICES PAGE CONTENT  -->
+        <v-row>
+          <v-col cols="12">
+            <v-card class="pa-4" flat tile>
+            <h4>Listed below are the current services available:</h4>
+            </v-card>
+          </v-col>
+        </v-row>
+          
+      <v-spacer></v-spacer>
+        
+      <!-- SERVICES LIST -->
+      <v-row > 
+        <v-col xs="12" sm="6">
+          <v-card height="100%" outlined tile>
+            <v-img max-height="500px" src="Pictures\Massage\Swedish.jpg"></v-img>
+            <v-card-title>Swedish Massage</v-card-title>
+            <v-card-text>Relaxing massage that calms the body, reduces tension and eases stress.</v-card-text>
+            
+          </v-card>
+        </v-col>
+
+        <v-col xs="12" sm="6">
+          <v-card height="100%" outlined tile>
+            <v-img max-height="500px" src= "Pictures\Massage\cupping.jpg"></v-img>
+            <v-card-title>Cupping</v-card-title>
+            <v-card-text>Allows fresh blood to flow to desired areas to deliver restorative nutrients, while also healing and relaxing tense muscles.</v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col xs="12" sm="6">
+          <v-card height="100%" outlined tile>
+            <v-img max-height="500px" src= "Pictures\Massage\GuaSha.jpg" width="100%"></v-img>
+            <v-card-title>Gua Sha</v-card-title>
+            <v-card-text>Relieves tension by stripping muscle fibers and fascia. Helps to break up fascia and relieve muscle and join pain. Also helps to reduce inflammation.</v-card-text>
+          </v-card>
+        </v-col>
+
+
+        <v-col xs="12" sm="6">
+          <v-card height="100%" outlined tile>
+            <v-img max-height="500px" src= "Pictures\Massage\LegBlaster.jpg"></v-img>
+            <v-card-title>Fascia Blasting</v-card-title>
+            <v-card-text>Tools that are used in conjunction with massage to restore, rehydrate, release fascial adhesions, and improve joint mobility. Additionally, helps to increase range of motion, circulation, and flexibility.</v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <br>
+           
+        <!-- SLIDESHOW -->
+
+        <v-row>
+          <v-col cols="12">
+            <v-carousel hide-delimiters cycle>
+              <v-carousel-item contain v-for="photo in photoCycle" :key="photo. src" :src="photo"></v-carousel-item>
+            </v-carousel>
+          </v-col>
+        </v-row>
+
+        <br>
+        <!-- POLICY LIST -->
+        <v-row>
+          <v-col cols="12">
+            <v-card class="pa-4" elevation="5" tile>
+              <v-card-title ><h2>Policies:</h2></v-card-title>
+                <v-card-text>MGMC appreciates you allowing our massage practice to provide your bodywork. It is our intention to provide you with a beneficial, therapeutic session. To do that to the best of our ability, please read over our policy statement.</v-card-text>
+                  
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title><b>Pricing:</b></v-list-item-title>
+                      <v-list-item-content> The pricing will be updated at a future date.</v-list-item-content>
+
+                    <v-list-item-title><b>Arrival:</b></v-list-item-title>
+                      <v-list-item-content>Arrive at least ten minutes before your scheduled appointment. We understand that we all have busy lifestyles, but to provide a relaxing massage, please allow yourself enough time to unwind into your session.</v-list-item-content><br>
+                      
+                    <v-list-item-title><b>Lateness:</b></v-list-item-title>
+                      <v-list-item-content>If you are running late, please call and let us know. Of course, unforeseen events cannot be avoided, but extreme lateness can affect our time together.</v-list-item-content><br>
+
+                    <v-list-item-title><b>Cancellation:</b></v-list-item-title>
+                      <v-list-item-content> If you need to cancel, please provide 24 hours notice.</v-list-item-content><br>
+
+                    <v-list-item-title><b>Confidentiality:</b></v-list-item-title>
+                      <v-list-item-content>Before, during, and after our session, all medical and personal information will remain confidential.</v-list-item-content><br>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </script>
+
+    <!-- FASCIA TEMPLATE -->
+    <script type="text/x-template" id="fascia-component">
+      <v-container fluid>
+          
+      <!-- FASCIA PAGE -->
+        <v-row>
+          <v-card class="pa-5" flat>
+            <v-col cols="12">
+              <p>Fascia is a system of connective tissue that protects and communicates within our bodies. The fascia is made up of elastin and collagen fibers that function as one system to provide stability and control. It covers us from head to toe. It connects and touches on EVERY cell, tissue, organ, muscle and bone in our body. It responds to tension, emotion, and pressure. Fascia gives form and function to our bodies’ muscle tissue and organs. It communicates with all the other systems of the body.</p>
+
+              <v-img src="Pictures\FasciaPictures\fascia_lines.jpg" contain max-height="500"> </v-img>
+            </v-col>
+          
+            <v-col cols="12">
+              <p><br>In my opinion, fascial adhesions are responsible for chronic pain and dysfunction. Because fascia runs in layers, it can stick together causing pain and tightness. Bound tissue hurts. It should not be painful. Our bodies hold these tissue patterns which cause chronic pain, tightness, and tension. This can show up as inflammation, dysfunction and disease in our bodies. Healthy fascia moves and glides. Healthy tissue does not hurt. </p>
+
+              <v-img src="Pictures\FasciaPictures\fascia_layers.jpg" contain max-height="500"></v-img>
+            </v-col>
+          
+            <v-col cols="12" >
+              <p><br>At Margie Girl Massage Clinic, our primary goal is fascia restoration. Clinical Studies have shown that fascia blasting improved: muscle and joint pain, headaches, posture and back pain, injuries from poor shoulder and hip misalignment, and cellulite. Fascia blasting does this by removing adhesions and restrictions in our body.</p>  
+              <br>
+              <p align="center"><b>Plain and simple.... Fascia blasting increases blood flow, which increases oxygen, and allows the body’s own healing.</b></p>
+            </v-col>
+          </v-card>
+        </v-row>
+
+        <!-- FASICA BLASTING CARD -->
+        <v-row>
+          <v-col cols="12">
+            <v-card shaped elevation="10">
+              <v-card-title>Fascia Blasting</v-card-title>
+              <v-card-subtitle class="font-italic">2019 Eco Excellence Award in Wellness/Alternative Remedies</v-card-subtitle>
+              <v-card-text>In 90 days of use, Clinical Studies found the Fascia Blaster resulted in an increase in metabolism, increase in collagen production, reduced fat, reduced inflammation, and tissue remodeling. Fascia is our connective tissue and covers our entire being. Various issues which affect our fascia are: diet, stress, surgeries, injuries, dehydration, sugar, bad posture, limited range of motion, and high impact exercises.
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+
+          <!-- PADDLE BLASTER -->
+        <v-row>
+          <v-col cols="6" align="center">
+              <v-card  height="100%" max-width="700px" >
+                <v-img  src="Pictures\Massage\PaddleBlaster.jpg"></v-img>
+            
+                <v-card-title>
+                  Paddle Blaster
+                </v-card-title>
+                <v-card-text>
+                  Thirty-six mini claws which allow for a full body blast. Used lightly and briskly over skin for ultimate circulation. These small claws are perfect for sensitive and super tight areas.
+                </v-card-text>
+              </v-card>
+          </v-col>
+
+          <!-- FACE BLASTER -->
+          <v-col cols="6" align="center">
+              <v-card  height="100%" max-width="700px">
+                <v-img src="Pictures\Massage\MiniBlasterHand.jpg"></v-img>
+            
+                <v-card-title>
+                  Face Blaster
+                </v-card-title>
+                <v-card-text>
+                  Delicate three claw tool for hard-to-reach areas, joints and tendons. Small claws that are perfect for sensitive areas especially hands, feet, knees, tendons and joints.
+                </v-card-text>            
+              </v-card>
+          </v-col>
+        </v-row>
+
+        <!-- FASCIA BLASTER -->
+        <v-row>
+          <v-col cols="12">
+            <v-card class="mx-auto" max-width="700">
+              <v-img max-height="700"
+                src="Pictures\FasciaPictures\FasciaBlaster.jpg" 
+              ></v-img>
+          
+              <v-card-title>
+                Fascia Blaster
+              </v-card-title>
+              <v-card-text>
+                Four full claws allow you to push deep into muscle tissue for increased blood flow. Allows massaging of the myofascial tissue. These claws are thicker and push deeper into muscle fibers.
+              </v-card-text>            
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <br>
+        <p align="center"><b>If your interest has been piqued, feel free to check out the shop and learn more by clicking the banner below!</b></p>
+        
+        <!-- AFFILIATE PICTURE WITH LINK -->
+        <v-row justify="center">
+          <v-card flat>
+            <a target="_blank" href="https://www.ashleyblackguru.com/?rfsn=3996824.10a442&utm_source=refersion&utm_medium=affiliate&utm_campaign=3996824.10a442">
+            <v-img class="title mb-1" 
+            src="Pictures\FasciaPictures\Affiliate_Banner.jpg"
+            max-height="400"
+            max-width="450">
+            </v-img>
+            </a>
+          </v-card>
+        </v-row>
+      </v-container>
+    </script>
+
+    <!-- CALENDAR TEMPLATE -->
+    <script type="text/x-template" id="calendar-component">
+      <v-container fluid px-5>
+        <div align="center">
+        <h2> Displayed below is the current availability of Margie.</h2>
+        <h4> When filling out the contact form, please specify the date and time of any desired appointment in the "comments" section so it can be placed in the calendar.</h4> 
+        </div><br>
+
+        <!-- NORMAL VERSION -->
+        <div align="center" class="d-none d-sm-block">
+          <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FNew_York&amp;src=bWdtYXNzYWdlY2xpbmljQGdtYWlsLmNvbQ&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%23039BE5&amp;color=%230B8043&amp;title=Margie%20Girl%20Massage%20Clinic&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=0&amp;showTz=1" style="border:solid 1px #777" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+        </div>
+
+        <!-- PHONE VERSION -->
+        <div align="center" class="d-sm-none">
+          <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FNew_York&amp;src=bWdtYXNzYWdlY2xpbmljQGdtYWlsLmNvbQ&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%23039BE5&amp;color=%230B8043&amp;title=Margie%20Girl%20Massage%20Clinic&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=1&amp;mode=AGENDA" style="border:solid 1px #777" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+        </div>
+
+      </v-container>
+    </script>
+
+    <!-- CONTACT TEMPLATE -->
+    <script type="text/x-template" id="contact-component">
+      <v-container fluid px-auto>
+        <v-row>
+          <v-col class="pb-0" cols="12" align="center">
+            <v-img src="Pictures/Form_Header.jpg" max-height="200px" :max-width="$vuetify.breakpoint.md ? '65%' : '640px'" style="border-radius: 10px;"></v-img>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col class="pt-0" cols="12">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe9YeN9mqcLcP57hwJ44OUeQXjYvOpBDXk2A8WqglQljJo6Mg/viewform?embedded=true" width="100%" height="1700" frameborder="0" marginheight="0" marginwidth="0" scrolling="no">Loading…</iframe>
+          </v-col>
+        </v-row>
+    </v-container>
+    </script>
+
+  <!-- FOOTER TEMPLATE -->
+  <script type="text/x-template" id="footer-component">
+        <!--FOOTER-->
+        <v-footer dark app :color="colors.secondary">
+            <v-container fluid pa-0>
+                <v-row align="center">
+                    <v-col>
+                        {{ new Date().getFullYear() }} — <strong>Amadio</strong>
+                    </v-col>
+
+                    <v-spacer></v-spacer>
+
+                    <v-col cols="1" v-for="item in socialMedia" :key="item.id">
+                        
+                        <v-tooltip top dark :color="colors.accent">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn icon :href="item.href" v-bind="attrs" v-on="on" v-if="item.isActive" target="_blank">
+                                    <v-icon :class="$vuetify.breakpoint.xs ? 'mr-10' : 'mr-0'">
+                                        {{item.icon}}
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            <span>{{item.name}}</span>
+                        </v-tooltip>
+                    </v-col>    
+
+                </v-row>
+            </v-container>
+        </v-footer>
+    </script>
+
+    
+    <!-- COMPONENT SECTION -->
+  <script>
+    //NAV BAR COMPONENT
+    Vue.component('nav-component',{
+      template: '#nav-component',
+      props: {
+        navItems: {
+          type: Array,
+          default: []
+        },
+        colors: {
+          type: Object,
+          default: {
+              primary: "primary",
+              secondary: "secondary",
+              accent: "accent"
+            }
+        }
+        
+      },
+      data: function(){
+        return {
+          group: null,
+          drawer: false,
+        } 
+      }
+    })
+
+    //HOME COMPONENT
+    Vue.component('home-component',{
+      template: '#home-component',
+      props: {
+          colors: {
+              type: Object,
+              default: {
+                  primary: "primary",
+                  secondary: "secondary",
+                  accent: "accent"
+              }
+          }
+        },
+      data: function(){
+        return{
+            
+        }
+      }
+    })
+
+    // MEET MARGIE COMPONENT
+    Vue.component('biography-component',{
+      template: '#biography-component',
+      props: {
+        },
+      data: function(){
+        return{   
+        }
+      }
+    })
+
+    //SERVICES COMPONENT
+    Vue.component('services-component',{
+      template: '#services-component',
+      props: {
+        photoCycle: {
+          type: Array,
+          default: []
+        }
+      },
+      data: function(){
+        return{
+          
+        }
+      }
+    })
+
+    //FASCIA COMPONENT
+    Vue.component('fascia-component',{
+      template: '#fascia-component',
+      props: {
+      },
+      data: function(){
+        return{
+          
+        }
+      }
+    })
+
+    //CALENDAR COMPONENT
+    Vue.component('calendar-component',{
+      template: '#calendar-component',
+      props: {
+      },
+      data: function(){
+        return{
+        }
+      }
+    })
+
+    //CONTACT COMPONENT
+    Vue.component('contact-component',{
+      template: '#contact-component',
+      props: {
+      },
+      data: function(){
+        return{
+        }
+      }
+    })
+
+    //FOOTER COMPONENT
+    Vue.component('footer-component',{
+        template: '#footer-component',
+        props: {
+            colors: {
+              type: Object,
+              default: {
+                primary: "primary",
+                secondary: "secondary",
+                accent: "accent"
+              }
+            },
+            socialMedia: {
+                type: Array,
+                default: []
+            }
+        },
+        data: function(){
+            return{
+                
+            }
+        }
+    })
+    
+   
+    //MAIN VUE
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        colors: {
+            primary: "#4BBFA4",
+            secondary: "#4B66BF",
+            accent: "#424242"
+        },
+        navSelection: {
+           id: 1,
+           icon: "mdi-home",
+           title: "Home"
+        },
+
+        navItems: [
+          {
+            id: 1,
+            icon: "mdi-home",
+            title: "Home"
+          },
+          {
+            id: 2,
+            icon: "mdi-face-woman",
+            title: "Meet Margie"
+          },
+          {
+           id: 3,
+           icon: "mdi-spa",
+           title: "Services"
+          },
+          {
+           id: 4,
+           icon: "mdi-hot-tub",
+           title: "Fascia Facts"
+          },
+          {
+           id: 5,
+           icon: "mdi-calendar",
+           title: "Calendar"
+          },
+          {
+           id: 6,
+           icon: "mdi-contact-mail",
+           title: "Contact"
+          }
+        ],
+
+        socialMedia: [
+            {
+                id: 1,
+                name: "Facebook",
+                icon: "mdi-facebook",
+                href: "https://www.facebook.com",
+                isActive: true
+            },
+            {
+                id: 2,
+                name: "Instagram",
+                icon: "mdi-instagram",
+                href: "https://www.instagram.com",
+                isActive: true
+            },
+            {
+                id: 3,
+                name: "Linkedin",
+                icon: "mdi-linkedin",
+                href: "https://www.linkedin.com",
+                isActive: true
+            }        
+        ],
+
+        photoCycle: [
+          {
+            src: "Pictures/Massage/Slideshow/Back1.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/Back2.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/Cups.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/GuaSha2.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/GuaSha3.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/Leg1.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/Leg2.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/Massage.jpeg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/MiniPaddle1.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/MiniPaddle2.jpg"
+          },
+          {
+            src: "Pictures/Massage/Slideshow/Tools.jpg"
+          }
+        ],
+      },  
+      methods: {
+	      changeNavSelection: function(event){
+		      this.navSelection = event;
+		      },
+        handleLogoClick: function(){
+          this.navSelection = this.navItems[0]
+        }
+	      }
+    })
+  </script>
+</body>
+</html>
